@@ -10,6 +10,7 @@ import com.visma.lecture.service.ShopService;
 import lecture.util.ShopTestUtilEmpty;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import java.util.Map;
@@ -112,5 +113,76 @@ public class ShopService_ExceptionTest {
     @Test (expected = NoItemFoundForCriteriaException.class)
     public void getItemsFromLocationWithLowerStockThanTest_Throws_NoItem(){
         List<Item> items = shopService_Empty.getItemsFromLocationWithLowerStockThan(ItemLocation.OSLO, 1000);
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void getItemsBySearchOfNameTest_Throws_Invalid(){
+        List<Item> items = shopService_Empty.getItemsBySearchOfName("");
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getItemsBySearchOfNameTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.getItemsBySearchOfName("test");
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void findAverageStockFromLocationTest_Throws_Invalid(){
+        double amount = shopService_Empty.findAverageStockFromLocation(null);
+    }
+
+    @Test
+    public void findAverageStockFromLocationTest_Returns_Empty(){
+        double amount = shopService_Empty.findAverageStockFromLocation(ItemLocation.OSLO);
+        assertEquals(0.0, amount, .1);
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void findItemsFromLocationWithHigherStockThanTest_Throws_Invalid(){
+        List<Item> items = shopService_Empty.findItemsFromLocationWithHigherStockThan(null, -1);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void findItemsFromLocationWithHigherStockThanTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.findItemsFromLocationWithHigherStockThan(ItemLocation.OSLO, 1000);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void findItemsAlphabeticallyByProducerTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.findItemsAlphabeticallyByProducer();
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void findItemsAlphabeticallyByNameTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.findItemsAlphabeticallyByName();
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void findItemsSortedByStockFromHighToLowTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.findItemsSortedByStockFromHighToLow();
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void findItemsWithoutDuplicatesTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.findItemsWithoutDuplicates();
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void createListOfItemsBetweenTwoRangesTest_Throws_Invalid(){
+        List<Item> items = shopService_Empty.createListOfItemsBetweenTwoRanges(-1, -1, -1, -1);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void createListOfItemsBetweenTwoRangesTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.createListOfItemsBetweenTwoRanges(1, 2, 3, 4);
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void createListOfItemsFromProducerTypeAndLocationTest_Throws_Invalid(){
+        List<Item> items = shopService_Empty.createListOfItemsFromProducerTypeAndLocation(null, null, "");
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void createListOfItemsFromProducerTypeAndLocationTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.createListOfItemsFromProducerTypeAndLocation(ItemLocation.OSLO, ItemType.ELECTRONICS, "test");
     }
 }

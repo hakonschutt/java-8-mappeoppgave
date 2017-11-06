@@ -3,21 +3,16 @@ package lecture.service;
 import com.visma.lecture.common.domain.Item;
 import com.visma.lecture.common.domain.support.ItemLocation;
 import com.visma.lecture.common.domain.support.ItemType;
-import com.visma.lecture.common.exception.InvalidCriteriaException;
+import com.visma.lecture.common.functions.Functions;
 import com.visma.lecture.repository.ShopRepository;
 import com.visma.lecture.service.ShopService;
 import lecture.util.ShopTestUtil;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ShopServiceTest {
 	
@@ -98,7 +93,7 @@ public class ShopServiceTest {
 	public void getAllProducersAsStringTest(){
 		String producer = shopService.getAllProducersAsString("x");
 
-		String expectedResult = "Producer_1xProducer_2xProducer_6xProducer_3xProducer_4xProducer_5";
+		String expectedResult = "Producer_1xProducer_2xProducer_3xProducer_4xProducer_5xProducer_6";
 
 		assertNotNull(producer);
 		assertEquals(expectedResult, producer);
@@ -170,14 +165,124 @@ public class ShopServiceTest {
 	}
 
 	@Test
-	public void getAverageStockFromLocationTest(){
-		double osloAvgStock = shopService.getAverageStockFromLocation(ItemLocation.OSLO);
-		double hamarAvgStock = shopService.getAverageStockFromLocation(ItemLocation.HAMAR);
+	public void findAverageStockFromLocationTest(){
+		double osloAvgStock = shopService.findAverageStockFromLocation(ItemLocation.OSLO);
+		double hamarAvgStock = shopService.findAverageStockFromLocation(ItemLocation.HAMAR);
 
 		assertEquals(1700.3, osloAvgStock, 0.1);
 		assertEquals(1351.6, hamarAvgStock, 0.1);
 	}
 
+	@Test
+	public void findItemWithHighestStockTest(){
+		Item item = shopService.findItemWithHighestStock();
 
+		assertEquals((Integer) 4000, item.getStock());
+	}
 
+	@Test
+	public void findItemWithLowestStockTest(){
+		Item item = shopService.findItemWithLowestStock();
+
+		assertEquals((Integer) 5, item.getStock());
+	}
+
+	@Test
+	public void findItemsFromLocationWithHigherStockThanTest(){
+		List<Item> osloItemList = shopService.findItemsFromLocationWithHigherStockThan(ItemLocation.OSLO, 3000);
+		List<Item> hamarItemList = shopService.findItemsFromLocationWithHigherStockThan(ItemLocation.HAMAR, 10);
+
+		assertEquals(1, osloItemList.size());
+		assertEquals(2, hamarItemList.size());
+
+		osloItemList.stream().forEach(e -> {
+			assertEquals(ItemLocation.OSLO, e.getItemLocation());
+			assertTrue(e.getStock() > 3000);
+		});
+
+		hamarItemList.stream().forEach(e -> {
+			assertEquals(ItemLocation.HAMAR, e.getItemLocation());
+			assertTrue(e.getStock() > 10);
+		});
+	}
+
+	@Test
+	public void findItemsAlphabeticallyByProducerTest(){
+		List<Item> itemList = shopService.findItemsAlphabeticallyByProducer();
+
+		for (int i = 0; i < itemList.size() - 1; i++){
+			String first = Functions.getProducer.apply(itemList.get(i));
+			String last = Functions.getProducer.apply(itemList.get(i + 1));
+
+			assertTrue(last.compareTo(first) > 0);
+		}
+	}
+
+	@Test
+	public void findItemsAlphabeticallyByNameTest(){
+		List<Item> items = shopService.findItemsAlphabeticallyByName();
+
+		for (int i = 0; i < items.size() - 1; i++){
+			String first = Functions.getName.apply(items.get(i));
+			String last = Functions.getName.apply(items.get(i + 1));
+
+			assertTrue(last.compareTo(first) > 0);
+		}
+	}
+
+	@Test
+	public void findItemsSortedByStockFromHighToLowTest(){
+		List<Item> items = shopService.findItemsSortedByStockFromHighToLow();
+
+		for (int i = 0; i < items.size() - 1; i++){
+			int first = items.get(i).getStock();
+			int last = items.get(i + 1).getStock();
+
+			assertTrue(first >= last);
+		}
+	}
+
+	@Test
+	public void findItemsWithoutDuplicatesTest(){
+		List<Item> items = shopService.findItemsWithoutDuplicates();
+
+		for (int i = 0; i < items.size(); i++){
+			for (int j = i+1; j < items.size(); j++){
+				assertFalse(items.get(i).equals(items.get(j)));
+			}
+		}
+	}
+
+	@Test
+	public void createListOfItemsBetweenTwoRangesTest(){
+		List<Item> items = shopService.createListOfItemsBetweenTwoRanges(2000, 2004, 2003, 2005);
+
+		items.stream().forEach(e -> {
+			assertTrue(e.getItemID() >= 2000);
+			assertTrue(e.getItemID() <= 2005);
+		});
+	}
+
+	@Test
+	public void createListOfItemsFromProducerTypeAndLocationTest(){
+		List<Item> items = shopService.createListOfItemsFromProducerTypeAndLocation(ItemLocation.OSLO, ItemType.BEVERAGE, "Producer 5");
+
+		items.stream().forEach(e -> assertTrue(
+				e.getItemLocation() == ItemLocation.OSLO
+						|| e.getItemType() == ItemType.BEVERAGE
+						|| e.getItemName().substring(0, e.getItemName().indexOf(" ")).equals("Producer_5")));
+
+		for (int i = 0; i < items.size(); i++){
+			for (int j = i+1; j < items.size(); j++){
+				assertFalse(items.get(i).equals(items.get(j)));
+			}
+		}
+	}
+
+	@Test
+	public void getTotalStockTest(){
+		double total = shopService.getTotalStock();
+
+		assertEquals(9156.0, total, .1);
+	}
 }
