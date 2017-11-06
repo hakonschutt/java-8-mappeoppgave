@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ShopServiceTest {
 	
@@ -62,5 +63,46 @@ public class ShopServiceTest {
 			i++;
 		}
 	}
-	
+
+	@Test
+	public void getNameMappedWithItemsTest(){
+		Map<String, List<Item>> nameListMap = shopService.getNameMappedWithItems();
+
+		assertEquals(6, nameListMap.size());
+
+		int i = 0;
+		while (i < nameListMap.size()){
+			String name = "Test" + (i + 1);
+
+			assertEquals(1, nameListMap.get(name).size());
+			i++;
+		}
+	}
+
+	@Test
+	public void getItemsMappedFromStock_1500_Test(){
+		Map<Boolean, List<Item>> stockCountMap = shopService.getItemsMappedFromStock_1500();
+
+		assertEquals(3, stockCountMap.get(true).size());
+		assertEquals(3, stockCountMap.get(false).size());
+	}
+
+	@Test
+	public void getItemFromIDTest(){
+		final Integer ID = 2002;
+		Item item = shopService.getItemFromID(ID);
+		assertNotNull(item);
+
+		assertEquals(ID, item.getItemID());
+	}
+
+	@Test
+	public void getAllProducersAsStringTest(){
+		String producer = shopService.getAllProducersAsString("x");
+
+		String expectedResult = "Producer_1xProducer_2xProducer_6xProducer_3xProducer_4xProducer_5";
+
+		assertNotNull(producer);
+		assertEquals(expectedResult, producer);
+	}
 }

@@ -3,6 +3,7 @@ package lecture.service;
 import com.visma.lecture.common.domain.Item;
 import com.visma.lecture.common.domain.support.ItemLocation;
 import com.visma.lecture.common.domain.support.ItemType;
+import com.visma.lecture.common.exception.InvalidCriteriaException;
 import com.visma.lecture.common.exception.NoItemFoundForCriteriaException;
 import com.visma.lecture.repository.ShopRepository;
 import com.visma.lecture.service.ShopService;
@@ -43,5 +44,36 @@ public class ShopService_ExceptionTest {
     @Test (expected = NoItemFoundForCriteriaException.class)
     public void getProducerMappedWithItemsTest_Throws_NoItem(){
         Map<String, List<Item>> producerMap = shopService_Empty.getProducerMappedWithItems();
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getNameMappedWithItemsTest_Throws_NoItem(){
+        Map<String, List<Item>> nameMap = shopService_Empty.getNameMappedWithItems();
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getItemsMappedFromStock_1500_Test_Throws_NoItem(){
+        Map<Boolean, List<Item>> stockCountMap = shopService_Empty.getItemsMappedFromStock_1500();
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void getItemFromIDTest_Throws_Invalid(){
+        Item item = shopService_Empty.getItemFromID(null);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getItemFromIDTest_Throws_NoItem(){
+        final Integer ID = 2002;
+        Item item = shopService_Empty.getItemFromID(ID);
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void getAllProducersAsStringTest_Throws_Invalid(){
+        String producer = shopService_Empty.getAllProducersAsString(null);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getAllProducersAsStringTest_Throws_NoItem(){
+        String producer = shopService_Empty.getAllProducersAsString("x");
     }
 }
