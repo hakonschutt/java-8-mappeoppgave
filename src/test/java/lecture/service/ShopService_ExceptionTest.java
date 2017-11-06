@@ -7,15 +7,12 @@ import com.visma.lecture.common.exception.InvalidCriteriaException;
 import com.visma.lecture.common.exception.NoItemFoundForCriteriaException;
 import com.visma.lecture.repository.ShopRepository;
 import com.visma.lecture.service.ShopService;
-import lecture.util.ShopTestUtil;
 import lecture.util.ShopTestUtilEmpty;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by hakonschutt on 06/11/2017.
@@ -75,5 +72,45 @@ public class ShopService_ExceptionTest {
     @Test (expected = NoItemFoundForCriteriaException.class)
     public void getAllProducersAsStringTest_Throws_NoItem(){
         String producer = shopService_Empty.getAllProducersAsString("x");
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void getItemLocationWithTotalStockHigherThenTest_Throws_Invalid(){
+        List<ItemLocation> locations = shopService_Empty.getItemLocationWithTotalStockHigherThen(-1);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getItemLocationWithTotalStockHigherThenTest_Throws_NoItem(){
+        List<ItemLocation> locations = shopService_Empty.getItemLocationWithTotalStockHigherThen(1000);
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void getItemLocationWithTotalStockLowerThenTest_Throws_Invalid(){
+        List<ItemLocation> locations = shopService_Empty.getItemLocationWithTotalStockLowerThen(-1);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getItemLocationWithTotalStockLowerThenTest_Throws_NoItem(){
+        List<ItemLocation> locations = shopService_Empty.getItemLocationWithTotalStockLowerThen(1000);
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void getItemsFromLocationWithHigherStockThanTest_Throws_Invalid(){
+        List<Item> items = shopService_Empty.getItemsFromLocationWithHigherStockThan(null, -1);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getItemsFromLocationWithHigherStockThanTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.getItemsFromLocationWithHigherStockThan(ItemLocation.OSLO, 1000);
+    }
+
+    @Test (expected = InvalidCriteriaException.class)
+    public void getItemsFromLocationWithLowerStockThanTest_Throws_Invalid(){
+        List<Item> items = shopService_Empty.getItemsFromLocationWithLowerStockThan(null, -1);
+    }
+
+    @Test (expected = NoItemFoundForCriteriaException.class)
+    public void getItemsFromLocationWithLowerStockThanTest_Throws_NoItem(){
+        List<Item> items = shopService_Empty.getItemsFromLocationWithLowerStockThan(ItemLocation.OSLO, 1000);
     }
 }

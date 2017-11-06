@@ -66,8 +66,8 @@ public class ShopRepositoryTest {
 
 	@Test
 	public void getItemsPerLocationTest(){
-		List<Item> itemsInOslo = shopRepository.getItemsPerLocation(ItemLocation.OSLO);
-		List<Item> itemsInHamar = shopRepository.getItemsPerLocation(ItemLocation.HAMAR);
+		List<Item> itemsInOslo = shopRepository.getItemsForLocation(ItemLocation.OSLO);
+		List<Item> itemsInHamar = shopRepository.getItemsForLocation(ItemLocation.HAMAR);
 
 		assertEquals(3, itemsInOslo.size());
 		assertEquals(3, itemsInHamar.size());
@@ -78,8 +78,8 @@ public class ShopRepositoryTest {
 
 	@Test
 	public void getItemsPerTypeTest(){
-		List<Item> itemsBeverage = shopRepository.getItemsPerType(ItemType.BEVERAGE);
-		List<Item> itemsElectronics = shopRepository.getItemsPerType(ItemType.ELECTRONICS);
+		List<Item> itemsBeverage = shopRepository.getItemsForType(ItemType.BEVERAGE);
+		List<Item> itemsElectronics = shopRepository.getItemsForType(ItemType.ELECTRONICS);
 
 		assertEquals(3, itemsBeverage.size());
 		assertEquals(3, itemsElectronics.size());

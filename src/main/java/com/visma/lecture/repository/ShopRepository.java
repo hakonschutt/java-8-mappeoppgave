@@ -42,7 +42,7 @@ public class ShopRepository {
 					));
 	}
 
-	public List<Item> getItemsPerLocation(ItemLocation loc){
+	public List<Item> getItemsForLocation(ItemLocation loc){
 		return items.stream()
 					.filter(e -> e.getItemLocation().equals(loc))
 					.collect(Collectors.collectingAndThen(
@@ -51,7 +51,7 @@ public class ShopRepository {
 					));
 	}
 
-	public List<Item> getItemsPerType(ItemType type){
+	public List<Item> getItemsForType(ItemType type){
 		return items.stream()
 					.filter(e -> e.getItemType().equals(type))
 					.collect(Collectors.collectingAndThen(

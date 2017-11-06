@@ -33,13 +33,13 @@ public class ShopRepositoryTest_Empty {
 
     @Test
     public void getItemsPerLocationTest_Return_Null(){
-        List<Item> itemsInOslo = shopRepository_Empty.getItemsPerLocation(ItemLocation.OSLO);
+        List<Item> itemsInOslo = shopRepository_Empty.getItemsForLocation(ItemLocation.OSLO);
         assertNull(itemsInOslo);
     }
 
     @Test
     public void getItemsPerTypeTest_Return_Null(){
-        List<Item> itemsWithType = shopRepository_Empty.getItemsPerType(ItemType.ELECTRONICS);
+        List<Item> itemsWithType = shopRepository_Empty.getItemsForType(ItemType.ELECTRONICS);
         assertNull(itemsWithType);
     }
 

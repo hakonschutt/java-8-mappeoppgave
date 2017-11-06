@@ -17,11 +17,9 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ShopServiceTest {
-	
-	@Rule
-	public ExpectedException expected = ExpectedException.none();
 	
 	private ShopRepository shopRepository;
 	private ShopService shopService;
@@ -105,4 +103,81 @@ public class ShopServiceTest {
 		assertNotNull(producer);
 		assertEquals(expectedResult, producer);
 	}
+
+	@Test
+	public void getItemLocationWithTotalStockHigherThenTest(){
+		final int STOCK = 2000;
+		List<ItemLocation> locationList = shopService.getItemLocationWithTotalStockHigherThen(STOCK);
+
+		assertEquals(2, locationList.size());
+	}
+
+	@Test
+	public void getItemLocationWithTotalStockLowerThenTest(){
+		final int STOCK = 5000;
+		List<ItemLocation> locationList = shopService.getItemLocationWithTotalStockLowerThen(STOCK);
+
+		assertEquals(1, locationList.size());
+	}
+
+	@Test
+	public void getItemsFromLocationWithHigherStockThanTest(){
+		final int STOCK_AMOUNT = 1000;
+		List<Item> osloItems = shopService.getItemsFromLocationWithHigherStockThan(ItemLocation.OSLO, STOCK_AMOUNT);
+		List<Item> hamarItems = shopService.getItemsFromLocationWithHigherStockThan(ItemLocation.HAMAR, STOCK_AMOUNT);
+
+		assertEquals(2, osloItems.size());
+		assertEquals(1, hamarItems.size());
+
+		osloItems.stream().forEach(e -> {
+			assertEquals(e.getItemLocation(), ItemLocation.OSLO);
+			assertTrue(e.getStock() > STOCK_AMOUNT);
+		});
+
+		hamarItems.stream().forEach(e -> {
+			assertEquals(e.getItemLocation(), ItemLocation.HAMAR);
+			assertTrue(e.getStock() > STOCK_AMOUNT);
+		});
+	}
+
+	@Test
+	public void getItemsFromLocationWithLowerStockThanTest(){
+		final int STOCK_AMOUNT = 1000;
+		List<Item> osloItems = shopService.getItemsFromLocationWithLowerStockThan(ItemLocation.OSLO, STOCK_AMOUNT);
+		List<Item> hamarItems = shopService.getItemsFromLocationWithLowerStockThan(ItemLocation.HAMAR, STOCK_AMOUNT);
+
+		assertEquals(1, osloItems.size());
+		assertEquals(2, hamarItems.size());
+
+		osloItems.stream().forEach(e -> {
+			assertEquals(e.getItemLocation(), ItemLocation.OSLO);
+			assertTrue(e.getStock() < STOCK_AMOUNT);
+		});
+
+		hamarItems.stream().forEach(e -> {
+			assertEquals(e.getItemLocation(), ItemLocation.HAMAR);
+			assertTrue(e.getStock() < STOCK_AMOUNT);
+		});
+	}
+
+	@Test
+	public void getItemsBySearchOfNameTest(){
+		List<Item> itemsWithGeneralSearch = shopService.getItemsBySearchOfName("te");
+		List<Item> itemsWithSpecificSearch = shopService.getItemsBySearchOfName("test2");
+
+		assertEquals(6, itemsWithGeneralSearch.size());
+		assertEquals(1, itemsWithSpecificSearch.size());
+	}
+
+	@Test
+	public void getAverageStockFromLocationTest(){
+		double osloAvgStock = shopService.getAverageStockFromLocation(ItemLocation.OSLO);
+		double hamarAvgStock = shopService.getAverageStockFromLocation(ItemLocation.HAMAR);
+
+		assertEquals(1700.3, osloAvgStock, 0.1);
+		assertEquals(1351.6, hamarAvgStock, 0.1);
+	}
+
+
+
 }

@@ -102,5 +102,102 @@ public class ShopService {
 
 		return producer;
 	}
+
+	public List<ItemLocation> getItemLocationWithTotalStockHigherThen(int stock_amount){
+		if(stock_amount <= 0)
+			throw new InvalidCriteriaException("Input was null, empty or lower than 0.");
+
+		List<ItemLocation> itemLocationList = getLocationMappedWithTotalStock().entrySet().stream()
+														.filter(l -> l.getValue() > stock_amount )
+														.map(l -> l.getKey())
+														.collect(Collectors.toList());
+
+		if(itemLocationList.size() == 0)
+			throw new NoItemFoundForCriteriaException("No items were found for the given search criteria.");
+
+		return itemLocationList;
+	}
+
+	public List<ItemLocation> getItemLocationWithTotalStockLowerThen(int stock_amount){
+		if(stock_amount <= 0)
+			throw new InvalidCriteriaException("Input was null, empty or lower than 0.");
+
+		List<ItemLocation> itemLocationList = getLocationMappedWithTotalStock().entrySet().stream()
+														.filter(l -> l.getValue() < stock_amount )
+														.map(l -> l.getKey())
+														.collect(Collectors.toList());
+
+		if(itemLocationList.size() == 0)
+			throw new NoItemFoundForCriteriaException("No items were found for the given search criteria.");
+
+		return itemLocationList;
+	}
+
+	public List<Item> getItemsFromLocationWithHigherStockThan(ItemLocation loc, int stock_amount){
+		if(loc == null || stock_amount <= 0)
+			throw new InvalidCriteriaException("Input was null, empty or lower than 0.");
+
+		List<Item> itemList = shopRepository.getItemsList().stream()
+											.filter(e -> e.getItemLocation().equals(loc))
+											.filter(e -> e.getStock() > stock_amount)
+											.collect(Collectors.toList());
+
+		if(itemList.size() == 0)
+			throw new NoItemFoundForCriteriaException("No items were found for the given search criteria.");
+
+		return itemList;
+	}
+
+	public List<Item> getItemsFromLocationWithLowerStockThan(ItemLocation loc, int stock_amount){
+		if(loc == null || stock_amount <= 0)
+			throw new InvalidCriteriaException("Input was null, empty or lower than 0.");
+
+		List<Item> itemList = shopRepository.getItemsList().stream()
+											.filter(e -> e.getItemLocation().equals(loc))
+											.filter(e -> e.getStock() < stock_amount)
+											.collect(Collectors.toList());
+
+		if(itemList.size() == 0)
+			throw new NoItemFoundForCriteriaException("No items were found for the given search criteria.");
+
+		return itemList;
+	}
+
+	public List<Item> getItemsBySearchOfName(String name){
+		if(name.length() <= 0)
+			throw new InvalidCriteriaException("Input was null, empty or lower than 0.");
+
+		final String NAME = name.toLowerCase();
+
+		List<Item> itemList = shopRepository.getItemsList().stream()
+											.filter(e -> Functions.getSpacedName.apply(e).toLowerCase().startsWith(NAME))
+											.collect(Collectors.toList());
+
+		if(itemList.size() == 0)
+			throw new NoItemFoundForCriteriaException("No items were found for the given search criteria.");
+
+		return itemList;
+	}
+
+	public double getAverageStockFromLocation(ItemLocation location){
+		if(location == null)
+			throw new InvalidCriteriaException("Input was null, empty or lower than 0.");
+
+		return shopRepository.getItemsList().stream()
+				.filter(e -> e.getItemLocation().equals(location))
+				.collect(Collectors.averagingDouble(Item::getStock));
+
+		// No point validating if its empty. It returns 0.0 anyways if it is.
+		// This means the user will always get the correct answer.
+	}
+
+
+	private Map<ItemLocation, Integer> getLocationMappedWithTotalStock(){
+		return shopRepository.getItemsList().stream()
+							.collect(Collectors.groupingBy(
+									Item::getItemLocation,
+									Collectors.summingInt(Item::getStock))
+							);
+	}
 	
 }
