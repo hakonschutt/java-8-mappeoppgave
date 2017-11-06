@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Leo-Andreas Ervik
+ * @author Håkon Wang Schütt
  */
 public class ShopRepositoryTest {
 	

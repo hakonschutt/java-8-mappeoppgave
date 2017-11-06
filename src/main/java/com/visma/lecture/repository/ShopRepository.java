@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Repository class for shop
  *
- * @author Leo-Andreas Ervik
+ * @author Håkon Wang Schütt
  */
 public class ShopRepository {
 
