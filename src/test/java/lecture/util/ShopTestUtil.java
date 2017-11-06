@@ -13,12 +13,12 @@ public class ShopTestUtil {
 	
 	public ShopTestUtil(){
 		items = new ArrayList<>();
-		items.add(new Item(2001, "Producer1 Test1", ItemLocation.OSLO, ItemType.BEVERAGE, 1));
-		items.add(new Item(2002, "Producer2 Test2", ItemLocation.OSLO, ItemType.ELECTRONICS, 1));
-		items.add(new Item(2003, "Producer3 Test3", ItemLocation.OSLO, ItemType.CLOTHING, 1));
-		items.add(new Item(2004, "Producer4 Test4", ItemLocation.HAMAR, ItemType.BEVERAGE, 1));
-		items.add(new Item(2005, "Producer5 Test5", ItemLocation.HAMAR, ItemType.ELECTRONICS, 1));
-		items.add(new Item(2006, "Producer6 Test7", ItemLocation.HAMAR, ItemType.CLOTHING, 1));
+		items.add(new Item(2001, "Producer_1 Test1", ItemLocation.OSLO, ItemType.BEVERAGE, 1501));
+		items.add(new Item(2002, "Producer_2 Test2", ItemLocation.OSLO, ItemType.ELECTRONICS, 200));
+		items.add(new Item(2006, "Producer_6 Test6", ItemLocation.HAMAR, ItemType.BEVERAGE, 5));
+		items.add(new Item(2003, "Producer_3 Test3", ItemLocation.OSLO, ItemType.ELECTRONICS, 3400));
+		items.add(new Item(2004, "Producer_4 Test4", ItemLocation.HAMAR, ItemType.BEVERAGE, 50));
+		items.add(new Item(2005, "Producer_5 Test5", ItemLocation.HAMAR, ItemType.ELECTRONICS, 4000));
 	}
 	
 	public List<Item> getItems() {
