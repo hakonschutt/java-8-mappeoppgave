@@ -25,8 +25,8 @@ public class Instructions {
         System.out.println(String.format("%-10s %-20s %-40s", "-l", "search -l oslo", "Will print a list of items from a given location"));
         System.out.println(String.format("%-10s %-20s %-40s", "-t", "search -t clothing", "Will print a list of items with the given type"));
         System.out.println(String.format("%-10s %-20s %-40s", "-s", "search -s 1500", "Will print a list of items with stock higher then the set parameter"));
-        System.out.println(String.format("%-10s %-20s %-40s", "-n", "search -p iphone", "Will print a list of items with the given name"));
-        System.out.println(String.format("%-10s %-20s %-40s", "-p", "search -s apple", "Will print a list of items with the given producer"));
+        System.out.println(String.format("%-10s %-20s %-40s", "-n", "search -n iphone", "Will print a list of items with the given name"));
+        System.out.println(String.format("%-10s %-20s %-40s", "-p", "search -p apple", "Will print a list of items with the given producer"));
         System.out.println(getLine(100));
     }
 

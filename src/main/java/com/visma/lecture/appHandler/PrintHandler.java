@@ -1,6 +1,8 @@
 package com.visma.lecture.appHandler;
 
 import com.visma.lecture.common.domain.Item;
+import com.visma.lecture.common.functions.Functions;
+
 import java.util.List;
 
 /**
@@ -8,13 +10,13 @@ import java.util.List;
  */
 public class PrintHandler {
     public static void printItemList(List<Item> items){
-        System.out.printf("%-15S %-15S %-15S %-15S %-15S", "Name", "Producer", "Location", "Type", "Stock");
+        System.out.printf("%-20S %-20S %-15S %-15S %-15S", "Name", "Producer", "Location", "Type", "Stock");
         System.out.println();
-        System.out.println("------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------");
         items.stream().forEach(e -> {
-            System.out.printf("%-15s %-15s %-15s %-15s %-15s",
-                    e.getItemName().substring(e.getItemName().indexOf(" ") + 1),
-                    e.getItemName().substring(0, e.getItemName().indexOf(" ")),
+            System.out.printf("%-20s %-20s %-15s %-15s %-15s",
+                    Functions.getSpacedName.apply(e),
+                    Functions.getSpacedProducer.apply(e),
                     e.getItemLocation(),
                     e.getItemType(),
                     e.getStock());
@@ -23,16 +25,17 @@ public class PrintHandler {
     }
 
     public static void printSingleItem(Item item){
-        System.out.printf("%-15S %-15S %-15S %-15S %-15S", "Name", "Producer", "Location", "Type", "Stock");
+        System.out.printf("%-20S %-20S %-15S %-15S %-15S", "Name", "Producer", "Location", "Type", "Stock");
         System.out.println();
-        System.out.println("------------------------------------------------------------------------------------------");
-        System.out.printf("%-15s %-15s %-15s %-15s %-15s",
-                item.getItemName().substring(item.getItemName().indexOf(" ") + 1),
-                item.getItemName().substring(0, item.getItemName().indexOf(" ")),
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.printf("%-20s %-20s %-15s %-15s %-15s",
+                Functions.getSpacedName.apply(item),
+                Functions.getSpacedProducer.apply(item),
                 item.getItemLocation(),
                 item.getItemType(),
                 item.getStock()
         );
+        System.out.println();
     }
 
     public static void printNoResult(){

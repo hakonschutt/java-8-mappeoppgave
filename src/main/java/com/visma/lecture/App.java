@@ -3,7 +3,6 @@ package com.visma.lecture;
 import com.visma.lecture.common.database.Database;
 import com.visma.lecture.common.domain.Item;
 import com.visma.lecture.repository.ShopRepository;
-import com.visma.lecture.service.ShopService;
 import com.visma.lecture.appHandler.Instructions;
 import com.visma.lecture.appHandler.PrintHandler;
 import com.visma.lecture.appHandler.SearchHandler;
@@ -18,7 +17,6 @@ import java.util.Scanner;
 public class App {
     private List<Item> items;
     private ShopRepository shopRepository;
-    private ShopService shopService;
     private Scanner sc = new Scanner(System.in);
     private SearchHandler searchHandler;
 
@@ -26,7 +24,6 @@ public class App {
     public App() {
         items = Database.itemTable;
         shopRepository = new ShopRepository(items);
-        shopService = new ShopService(shopRepository);
         searchHandler = new SearchHandler(shopRepository);
     }
 
@@ -82,6 +79,28 @@ public class App {
         return "";
     }
 
+    public String breakUpCommand(String commandString){
+        String[] commands = commandString.replace("-", "").split(" ");
+
+        if(commands[0].equals("search") && commands[1].equals("n") || commands[1].equals("p") && commands.length > 2){
+            String[] temp = new String[3];
+            temp[0] = commands[0];
+            temp[1] = commands[1];
+            temp[2] = "";
+            for (int i = 2; i < commands.length; i++){
+                temp[2] += commands[i] + (commands.length > (i + 1) ? " " : "");
+            }
+            commands = temp;
+        }
+
+        if(commands.length > 3){
+            System.out.println("You are not allowed more then one parameter");
+            return "";
+        }
+
+        return getCommands(commands);
+    }
+
     public boolean executeCommand(String command){
         String[] cases = {"man", "all", "search", "quit"};
 
@@ -90,13 +109,7 @@ public class App {
             if(command.startsWith(cases[i])) break;
 
         if(command.contains("-") && (i != 1 && i != 3)){
-            String[] commands = command.replace("-", "").split(" ");
-            command = getCommands(commands);
-
-            if(commands.length > 3){
-                System.out.println("You are not allowed more then one parameter");
-                return true;
-            }
+            command = breakUpCommand(command);
         }
 
         System.out.println();
