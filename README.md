@@ -1,5 +1,3 @@
-## Task ##
-
 ## Shop - Functional design ##
 The shop is the backend system of an online store like eBay or Amazon. The part of the store we are creating gets instructions from a customer that wants information from the database and gives back the information requested.
 
@@ -106,5 +104,20 @@ No items match the given criteria | Return null or empty list
 ---
 
 #### Author ####
+hakon@schutt.no
 
-leo.ervik@gmail.com
+## ***Extension*** ##
+
+There is a simple Appl class that has been implementet. This will allow the user to easily search for information in the database. To se the whole man page type "man -search" the following prompt will appear.
+ 
+    SEARCH OPTIONS                                    
+    ----------------------------------------------------------------------------------------------------
+    EXTENSION  EXAMPLE              DESCRIPTION                             
+    ----------------------------------------------------------------------------------------------------
+    -id        search -id 1         Will print the single item with that id 
+    -l         search -l oslo       Will print a list of items from a given location
+    -t         search -t clothing   Will print a list of items with the given type
+    -s         search -s 1500       Will print a list of items with stock higher then the set parameter
+    -n         search -p iphone     Will print a list of items with the given name
+    -p         search -s apple      Will print a list of items with the given producer
+    ----------------------------------------------------------------------------------------------------
