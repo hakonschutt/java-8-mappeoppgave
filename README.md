@@ -108,7 +108,7 @@ hakon@schutt.no
 
 ## ***Extension*** ##
 
-There is a simple Appl class that has been implementet. This will allow the user to easily search for information in the database. To se the whole man page type "man -search" the following prompt will appear.
+There is a simple App class that has been implemented. This will allow the user to easily search for information in the database. To se the whole man page type "man -search" the following prompt will appear.
  
     SEARCH OPTIONS                                    
     ----------------------------------------------------------------------------------------------------
